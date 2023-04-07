@@ -1,4 +1,6 @@
 @extends('layouts.user')
+@section('count-cart', $countCart)
+@section('count-wishlist', $countWish)
 
 @section('content')
     <div class="container-fluid bg-secondary mb-5">

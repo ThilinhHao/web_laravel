@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
@@ -26,27 +30,67 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
-    }
-
-    public function userIndex() {
         $categoryAll = Category::all();
-        $productTrending = Product::where('trending', '!=', '0')->get();
-        $productPopular = Product::where('status', '!=', '0')->get();
-        return view('user.index', compact('categoryAll', 'productTrending', 'productPopular'));
+
+        $cart = Cart::where('user_id', Auth::id())->get();
+        $countCart = $cart->count();
+
+        $wishlist = Wishlist::where('user_id', Auth::id())->get();
+        $countWish = $wishlist->count();
+
+
+        $productTrending = Product::withCount('wishlist')->where('trending', '!=', '0')->get();
+        $productPopular = Product::withCount('wishlist')->where('status', '!=', '0')->get();
+
+        return view('user.index', compact('categoryAll', 'productTrending', 'productPopular', 'countCart', 'countWish'));
     }
 
 
     public function contact() {
         $categoryAll = Category::all();
 
-        return view('user.contact', compact('categoryAll'));
+        $cart = Cart::where('user_id', Auth::id())->get();
+        $countCart = $cart->count();
+
+        $wishlist = Wishlist::where('user_id', Auth::id())->get();
+        $countWish = $wishlist->count();
+
+        $total_wish = Wishlist::all();
+        $totalList = $total_wish->count();
+
+        return view('user.contact', compact('categoryAll', 'countCart', 'countWish', 'totalList'));
     }
 
-    public function checkout() {
+    public function myOrder() {
         $categoryAll = Category::all();
 
-        return view('user.checkout', compact('categoryAll'));
+        $cart = Cart::where('user_id', Auth::id())->get();
+        $countCart = $cart->count();
+
+        $wishlist = Wishlist::where('user_id', Auth::id())->get();
+        $countWish = $cart->count();
+
+        $total_wish = Wishlist::all();
+        $totalList = $total_wish->count();
+
+        $orders = Order::where('user_id', Auth::id())->get();
+
+        return view('user.orders.index', compact('categoryAll', 'orders', 'countCart', 'countWish', 'totalList'));
+    }
+
+    public function viewOrder($id) {
+        $categoryAll = Category::all();
+
+        $cart = Cart::where('user_id', Auth::id())->get();
+        $countCart = $cart->count();
+
+        $wishlist = Wishlist::where('user_id', Auth::id())->get();
+        $orders = Order::where('id', $id)->where('user_id', Auth::id())->first();
+
+        $total_wish = Wishlist::all();
+        $totalList = $total_wish->count();
+
+        return view('user.orders.detail', compact('categoryAll', 'orders', 'countCart', 'countWish', 'totalList'));
     }
 
 }

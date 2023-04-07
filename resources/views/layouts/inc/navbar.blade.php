@@ -11,7 +11,7 @@
 
                 <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
                     @foreach ($categoryAll as $category)
-                        <a href="" class="nav-item nav-link">{{$category->name}}</a>
+                        <a href="" class="nav-item nav-link">{{ $category->name }}</a>
                     @endforeach
 
                 </div>
@@ -28,21 +28,47 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="{{url('/user')}}" class="nav-item nav-link {{Request::is('user') ? 'active' : ''}}">Home</a>
-                        <a href="{{url('/shop')}}" class="nav-item nav-link {{Request::is('shop') ? 'active' : '' || Request::is('shopsearch') ? 'active' : ''}}">Shop</a>
-                        <a href="{{url('/cart')}}" class="nav-item nav-link {{Request::is('cart') ? 'active' : ''}}">Shopping Cart</a>
-                        <a href="{{url('/checkout')}}" class="nav-item nav-link {{Request::is('checkout') ? 'active' : ''}}">Checkout</a>
-                        <a href="{{url('/contact')}}" class="nav-item nav-link">Contact</a>
+                        <a href="{{ url('/home') }}"
+                            class="nav-item nav-link {{ Request::is('home') ? 'active' : '' }}">Home</a>
+                        <a href="{{ url('/shop') }}"
+                            class="nav-item nav-link {{ Request::is('shop') ? 'active' : '' || Request::is('shopsearch') ? 'active' : '' || Request::is('shopprice') ? 'active' : ''}}">Shop</a>
+                        <a href="{{ url('/wishlist') }}"
+                            class="nav-item nav-link {{ Request::is('wishlist') ? 'active' : '' }}">Wishlist</a>
+                            <a href="{{ url('/cart') }}"
+                            class="nav-item nav-link {{ Request::is('cart') ? 'active' : '' }}">Shopping Cart</a>
+                        <a href="{{ url('/my-order') }}"
+                            class="nav-item nav-link {{ Request::is('my-order') ? 'active' : '' }}">My Order</a>
+                        <a href="{{ url('/contact') }}"
+                            class="nav-item nav-link {{ Request::is('contact') ? 'active' : '' }}">Contact</a>
                     </div>
-                    <div class="navbar-nav ml-auto py-0">
-                        <a href="" class="nav-item nav-link">{{ Auth::user()->name }}</a>
-                    </div>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            {{ Auth::user()->name }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="#">My Profile</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
                 </div>
             </nav>
             <div id="header-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active" style="height: 410px;">
-                        <img class="img-fluid" src="{{asset('users/img/carousel-1.jpg')}}" alt="Image">
+                        <img class="img-fluid" src="{{ asset('users/img/carousel-1.jpg') }}" alt="Image">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
                                 <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order
@@ -53,7 +79,7 @@
                         </div>
                     </div>
                     <div class="carousel-item" style="height: 410px;">
-                        <img class="img-fluid" src="{{asset('users/img/carousel-2.jpg')}}" alt="Image">
+                        <img class="img-fluid" src="{{ asset('users/img/carousel-2.jpg') }}" alt="Image">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
                                 <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order

@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ShopController extends Controller
@@ -11,12 +14,29 @@ class ShopController extends Controller
     //
     public function shopIndex() {
         $categoryAll = Category::all();
-        $products = Product::paginate(6);
-        return view('user.shop', compact('products', 'categoryAll'));
+        $cart = Cart::where('user_id', Auth::id())->get();
+        $countCart = $cart->count();
+
+        $wishlist = Wishlist::where('user_id', Auth::id())->get();
+        $countWish = $wishlist->count();
+
+        // $products = Product::paginate(6);
+        $products = Product::withCount('wishlist')->paginate(6);
+        return view('user.shop', compact('products', 'categoryAll', 'countCart', 'countWish'));
     }
 
     public function shopSort(Request $request) {
         $categoryAll = Category::all();
+
+        $cart = Cart::where('user_id', Auth::id())->get();
+        $countCart = $cart->count();
+
+        $wishlist = Wishlist::where('user_id', Auth::id())->get();
+        $countWish = $wishlist->count();
+
+        $total_wish = Wishlist::all();
+        $totalList = $total_wish->count();
+
         $sort = $request->input('sort');
 
         if ($sort == 'status') {
@@ -27,11 +47,17 @@ class ShopController extends Controller
             $products = Product::paginate(9);
         }
 
-        return view('user.shop', compact('products', 'categoryAll'));
+        return view('user.shop', compact('products', 'categoryAll', 'countCart', 'countWish', 'totalList'));
     }
 
     public function search(Request $request) {
         $categoryAll = Category::all();
+
+        $cart = Cart::where('user_id', Auth::id())->get();
+        $countCart = $cart->count();
+
+        $wishlist = Wishlist::where('user_id', Auth::id())->get();
+        $countWish = $wishlist->count();
 
         $validator = Validator::make($request->all(), [
             'searchTerm' => 'required',
@@ -44,13 +70,20 @@ class ShopController extends Controller
         }
 
         $searchTerm = $request->input('searchTerm');
-        $productSearch = Product::where('name', 'like', '%'.$searchTerm.'%')->paginate(6);
-        return view('user.shop', compact('productSearch', 'categoryAll'));
+        $productSearch = Product::withCount('wishlist')->where('name', 'like', '%'.$searchTerm.'%')->paginate(6);
+        return view('user.shop', compact('productSearch', 'categoryAll', 'countCart', 'countWish'));
     }
 
     public function searchPrice(Request $request) {
 
         $categoryAll = Category::all();
+
+        $cart = Cart::where('user_id', Auth::id())->get();
+        $countCart = $cart->count();
+
+        $wishlist = Wishlist::where('user_id', Auth::id())->get();
+        $countWish = $wishlist->count();
+
         $priceAll = $request->has('price-all');
         $price1 = $request->has('price-1');
         $price2 = $request->has('price-2');
@@ -76,8 +109,8 @@ class ShopController extends Controller
             }
         }
 
-        $productPrice = $query->paginate(6);
+        $productPrice = $query->withCount('wishlist')->paginate(6);
 
-        return view('user.shop', compact('productPrice', 'priceCheck', 'categoryAll'));
+        return view('user.shop', compact('productPrice', 'priceCheck', 'categoryAll', 'countCart', 'countWish'));
     }
 }

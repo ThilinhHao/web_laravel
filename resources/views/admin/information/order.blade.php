@@ -3,7 +3,7 @@
 @section('content')
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 style="font-weight: bold;">Product Pages</h4>
+            <h4 style="font-weight: bold;">Orders Pages</h4>
             <form action=""  method="GET" class="navbar-form">
                 @csrf
                 <div class="input-group no-border" >
@@ -20,19 +20,35 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th style="text-align:center;">No</th>
-                        <th style="text-align:center;">Name</th>
-                        <th style="text-align:center;">Type</th>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Address</th>
+                        <th>Total price</th>
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>hao123</td>
-                        <td>User</td>
-                    </tr>
+                    @foreach ($orders as $item)
+                        <tr>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$item->name}}</td>
+                            <td>{{$item->email}}</td>
+                            <td>{{$item->mobile}}</td>
+                            <td>{{$item->address}}</td>
+                            <td>${{number_format($item->total_price)}}</td>
+                            <td>{{$item->status == '1' ? 'Đã thanh toán' : 'Thanh toán khi nhận hàng.'}}</td>
+                            <td>
+                                <a href="{{url('order-detail/' . $item->id)}}" class="btn btn-primary">View</a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
+            {{ $orders->links('pagination::bootstrap-4') }}
         </div>
     </div>
 @endsection
+

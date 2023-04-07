@@ -29,7 +29,7 @@
                 </a>
             </li>
             <p>Product</p>
-            <li class="nav-item {{ Request::is('products') ? 'active' : '' || Request::is('searchproduct') ? 'active': ''}} ">
+            <li class="nav-item {{ Request::is('products') ? 'active' : '' || Request::is('searchproduct') ? 'active': ''}}  ">
                 <a class="nav-link" href="{{ url('products') }}">
                     <i class="material-icons">content_paste</i>
                     <p>List Product</p>

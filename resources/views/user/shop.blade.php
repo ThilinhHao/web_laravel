@@ -1,4 +1,6 @@
 @extends('layouts.user')
+@section('count-cart', $countCart)
+@section('count-wishlist', $countWish)
 
 @section('content')
     <div class="container-fluid bg-secondary mb-5">
@@ -116,8 +118,10 @@
                                     <div class="card-footer d-flex justify-content-between bg-light border">
                                         <a href="{{url('detail/'.$product->id)}}" class="btn btn-sm text-dark p-0"><i
                                                 class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                                class="fas fa-heart text-primary mr-1"></i>Wish list</a>
+                                        <div class="btn btn-sm text-dark p-0">
+                                            <i class="fas fa-heart text-primary mr-1"></i>
+                                            <span class="badge wishlist-count">{{$product->wishlist_count}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -147,8 +151,10 @@
                                     <div class="card-footer d-flex justify-content-between bg-light border">
                                         <a href="" class="btn btn-sm text-dark p-0"><i
                                                 class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                                class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                        <div class="btn btn-sm text-dark p-0">
+                                            <i class="fas fa-heart text-primary mr-1"></i>
+                                            <span class="badge wishlist-count">{{$products->wishlist_count}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -177,8 +183,10 @@
                                 <div class="card-footer d-flex justify-content-between bg-light border">
                                     <a href="" class="btn btn-sm text-dark p-0"><i
                                             class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                    <a href="" class="btn btn-sm text-dark p-0"><i
-                                            class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                    <div class="btn btn-sm text-dark p-0">
+                                        <i class="fas fa-heart text-primary mr-1"></i>
+                                        <span class="badge wishlist-count">{{$product->wishlist_count}}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -214,23 +222,6 @@
                 form.submit();
             });
         });
-
-        // checkboxes.forEach((checkbox) => {
-        //     checkbox.addEventListener('change', function() {
-        //         const form = document.getElementById('price-form');
-        //         const formData = new FormData(form);
-        //         const xhr = new XMLHttpRequest();
-        //         xhr.open('POST', form.action);
-        //         xhr.onreadystatechange = function() {
-        //             if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-        //                 // Update the content of the page with the response
-        //                 const response = xhr.responseText;
-        //                 document.getElementById('result-container').innerHTML = response;
-        //             }
-        //         };
-        //         xhr.send(formData);
-        //     });
-        // });
 
     </script>
 

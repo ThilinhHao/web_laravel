@@ -61,6 +61,11 @@
     <script src="{{ asset('frontend/js/jquery-3.6.3.min.js') }}"></script>
     <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    @if (session('success'))
+    <script>
+        swal("{{ session('success') }}");
+    </script>
+    @endif
 
     @yield('scripts')
 </body>

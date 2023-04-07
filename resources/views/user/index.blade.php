@@ -1,5 +1,8 @@
 @extends('layouts.user')
 
+@section('count-cart', $countCart)
+@section('count-wishlist', $countWish)
+
 @section('feature')
     @include('layouts.inc.feature')
 @endsection
@@ -46,7 +49,10 @@
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a href="{{url('detail/'.$trending->id)}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-heart text-primary mr-1"></i>Wish list</a>
+                            <div class="btn btn-sm text-dark p-0">
+                                <i class="fas fa-heart text-primary mr-1"></i>
+                                <span class="badge wishlist-count">{{$trending->wishlist_count}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -76,7 +82,10 @@
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a href="{{url('detail/'.$popular->id)}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-heart text-primary mr-1"></i>Wish list</a>
+                            <div class="btn btn-sm text-dark p-0">
+                                <i class="fas fa-heart text-primary mr-1"></i>
+                                <span class="badge wishlist-count">{{$popular->wishlist_count}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

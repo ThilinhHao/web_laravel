@@ -1,4 +1,6 @@
 @extends('layouts.user')
+@section('count-cart', $countCart)
+@section('count-wishlist', $countWish)
 
 @section('content')
     <div class="container-fluid bg-secondary mb-5">
@@ -13,6 +15,7 @@
     </div>
 
     <div class="container-fluid pt-5">
+        @if ($cartItems->count() > 0)
         <div class="row px-xl-5">
             <div class="col-lg-8 table-responsive mb-5">
                 <table class="table table-bordered text-center mb-0">
@@ -26,39 +29,51 @@
                             <th>Remove</th>
                         </tr>
                     </thead>
-                    <tbody class="align-middle">
-                        @php
-                            $total = 0;
-                        @endphp
-                        @foreach ($cartItems as $item)
+
+                        <tbody class="align-middle">
                             @php
-                                $total += $item->product_quantity * $item->products->selling_price;
+                                $total = 0;
                             @endphp
-                            <tr class="product-data">
-                                <td class="align-middle"><img src="{{asset('assets/uploads/product/'. $item->products->image)}}" alt="" style="width: 50px;"></td>
-                                <td class="align-middle">{{$item->products->name}}</td>
-                                <td class="align-middle">${{number_format($item->products->selling_price)}}</td>
-                                <td class="align-middle">
-                                    <div class="input-group quantity mx-auto" style="width: 100px;">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-minus" >
-                                            <i class="fa fa-minus"></i>
-                                            </button>
-                                        </div>
-                                        <input type="hidden" class="product_id" value="{{$item->product_id}}">
-                                        <input type="text" name="quantity" class="form-control qty-input form-control-sm bg-secondary text-center" value="{{$item->product_quantity}}">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-plus">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="align-middle">${{number_format($item->product_quantity * $item->products->selling_price)}}</td>
-                                <td class="align-middle"><button class="btn btn-sm btn-primary delete-cart-item"><i class="fa fa-times"></i></button></td>
-                            </tr>
-                        @endforeach
-                    </tbody>
+                            @foreach ($cartItems as $item)
+                                <tr class="product-data">
+                                    <td class="align-middle"><img
+                                            src="{{ asset('assets/uploads/product/' . $item->products->image) }}" alt=""
+                                            style="width: 50px;"></td>
+                                    <td class="align-middle">{{ $item->products->name }}</td>
+                                    <td class="align-middle">${{ number_format($item->products->selling_price) }}</td>
+                                    <td class="align-middle">
+                                        @if ($item->products->qty > $item->product_quantity)
+                                            @php
+                                                $total += $item->product_quantity * $item->products->selling_price;
+                                            @endphp
+                                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-sm btn-primary changeQuantity btn-minus">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                                <input type="hidden" class="product_id" value="{{ $item->product_id }}">
+                                                <input type="text" name="quantity"
+                                                    class="form-control qty-input form-control-sm bg-secondary text-center"
+                                                    value="{{ $item->product_quantity }}">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-sm btn-primary changeQuantity btn-plus">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        @else
+                                            <h6>Out of Stock</h6>
+                                        @endif
+                                    </td>
+                                    <td class="align-middle">
+                                        ${{ number_format($item->product_quantity * $item->products->selling_price) }}</td>
+                                    <td class="align-middle"><button class="btn btn-sm btn-primary delete-cart-item"><i
+                                                class="fa fa-times"></i></button></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                 </table>
             </div>
             <div class="col-lg-4">
@@ -77,64 +92,97 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium">$150</h6>
+                            <h6 class="font-weight-medium">${{ number_format($total) }}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium">$10</h6>
+                            <h6 class="font-weight-medium">$0</h6>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">${{number_format($total)}}</h5>
+                            <h5 class="font-weight-bold">${{ number_format($total) }}</h5>
                         </div>
-                        <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                        <a href="{{ url('checkout') }}" class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</a>
                     </div>
                 </div>
             </div>
         </div>
+        @else
+            <div class="card-body text-center">
+                <h2>Your <i class="fa fa-shopping-cart"></i>Cart is empty</h2>
+                <a href="{{url('shop')}}" class="btn btn-outline-primary float-end">Continue shopping</a>
+            </div>
+        @endif
     </div>
 @endsection
 
 @section('scripts')
-<script>
-    document.querySelector(".btn-minus").addEventListener("click", function() {
-        var quantityInput = document.querySelector("input[name='quantity']");
-        var quantityValue = parseInt(quantityInput.value);
+    <script>
+        document.querySelector(".btn-minus").addEventListener("click", function() {
+            var quantityInput = document.querySelector("input[name='quantity']");
+            var quantityValue = parseInt(quantityInput.value);
 
-        if (quantityValue > 1) {
-            quantityInput.value = quantityValue - 1;
-        } else {
-            quantityInput.value = 1;
-        }
-    });
+            if (quantityValue > 1) {
+                quantityInput.value = quantityValue - 1;
+            } else {
+                quantityInput.value = 1;
+            }
+        });
 
-    document.querySelectorAll(".delete-cart-item").forEach(function (item) {
-        item.addEventListener("click", function (e) {
-            e.preventDefault();
+        document.querySelectorAll(".delete-cart-item").forEach(function(item) {
+            item.addEventListener("click", function(e) {
+                e.preventDefault();
 
-            var product_id = $(this).closest('.product-data').find('.product_id').val();
+                var product_id = $(this).closest('.product-data').find('.product_id').val();
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
-            $.ajax({
-                method: "POST",
-                url: "delete-cart-item",
-                data: {
-                    'product_id': product_id,
-                },
-                success: function (response) {
-                    window.location.reload();
-                    swal(response.status);
-                }
+                $.ajax({
+                    method: "POST",
+                    url: "delete-cart-item",
+                    data: {
+                        'product_id': product_id,
+                    },
+                    success: function(response) {
+                        window.location.reload();
+                        swal(response.status);
+                    }
+                });
             });
         });
-    });
 
-</script>
+        document.querySelectorAll(".qty-input").forEach(function(item) {
+            item.addEventListener("input", function(e) {
+                var product_id = $(this).closest('.product-data').find('.product_id').val();
+                var product_quantity = $(this).val();
+
+                data = {
+                    'product_id': product_id,
+                    'product_quantity': product_quantity,
+                }
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    method: "POST",
+                    url: "update-cart",
+                    data: data,
+                    success: function(response) {
+                        window.location.reload();
+                        swal(response.status);
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

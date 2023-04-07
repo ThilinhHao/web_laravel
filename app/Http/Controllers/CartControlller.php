@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,18 +19,19 @@ class CartControlller extends Controller
             $pro_check = Product::where('id', $product_id)->first();
 
             if ($pro_check) {
-                if (Cart::where('product_id', $product_id)->where('user_id', Auth::id())->exists()) {
-                    return response()->json(['status' => "Product added to cart successfully."]);
+                $cartItem = Cart::where('product_id', $product_id)->where('user_id', Auth::id())->first();
+                if ($cartItem) {
+                    $cartItem->product_quantity += $product_quantity;
+                    $cartItem->save();
+                    return response()->json(['status' => "Product quantity updated in cart successfully."]);
                 } else {
                     $cartItem = new Cart();
                     $cartItem->product_id = $product_id;
                     $cartItem->user_id = Auth::id();
                     $cartItem->product_quantity = $product_quantity;
                     $cartItem->save();
-
                     return response()->json(['status' => "Product added to cart successfully."]);
                 }
-
             }
         } else {
             return response()->json(['status' => "Login to continue."]);
@@ -39,8 +41,14 @@ class CartControlller extends Controller
     public function shopCart() {
         $categoryAll = Category::all();
 
+        $cart = Cart::where('user_id', Auth::id())->get();
+        $countCart = $cart->count();
+
+        $wishlist = Wishlist::where('user_id', Auth::id())->get();
+        $countWish = $wishlist->count();
+
         $cartItems = Cart::where('user_id', Auth::id())->get();
-        return view('user.cart', compact('categoryAll', 'cartItems'));
+        return view('user.cart', compact('categoryAll', 'cartItems', 'countCart', 'countWish'));
     }
 
     public function deleteProduct(Request $request) {
@@ -70,6 +78,9 @@ class CartControlller extends Controller
                 $cart->update();
                 return response()->json(['status' => "Product update quantity succesfully."]);
             }
+        }  else {
+            return response()->json(['status' => "Login to continue."]);
         }
     }
+
 }
