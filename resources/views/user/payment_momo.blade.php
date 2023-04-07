@@ -54,6 +54,9 @@
                 $total += $item->products->selling_price * $item->product_quantity;
             @endphp
         @endforeach
+        @php
+            $total_vnd = round($total * 240);
+        @endphp
         <div class="col-md-6 form-group">
             <input type="hidden" name="total_momo" value="{{$total}}">
             <button type="submit" name="payUrl" style="background-color: #f14a4a; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">

@@ -30,16 +30,15 @@ use App\Http\Controllers\Admin\LanguageController;
 
 /*
 php artisan serve --host=localhost --port=8000
-đổi cổng port để đăng nhập bằng fb và gg.
 
 test momo:
 sdt: 0919100100
+test momo:
+sdt: 0919100100
+stk : 9704 0000 0000 0018
+ten chu the : NGUYEN VAN A
+ngay cap : 03/07
 
-Tạo repository: xử lí logic và truy vấn sql.
-Khởi tạo controller và gọi Repository return view hoặc validate
-Khởi tạo form request: xử lí validate tại đây.
-Khởi tạo model: xử lí mối quan hệ 1-1, 1-n ,n-n,
-Khi update thì nên dùng file or fail
 
 */
 Route::get('/', function () {
