@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->integer('user_id');
             $table->string('name');
             $table->string('email');
-            $table->string('moblie');
+            $table->string('mobile');
             $table->string('address');
             $table->string('total_price');
             $table->tinyInteger('status')->default('0');

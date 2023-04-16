@@ -73,7 +73,7 @@ class HomeController extends Controller
         $total_wish = Wishlist::all();
         $totalList = $total_wish->count();
 
-        $orders = Order::where('user_id', Auth::id())->get();
+        $orders = Order::where('user_id', Auth::id())->paginate(10);
 
         return view('user.orders.index', compact('categoryAll', 'orders', 'countCart', 'countWish', 'totalList'));
     }
@@ -83,6 +83,9 @@ class HomeController extends Controller
 
         $cart = Cart::where('user_id', Auth::id())->get();
         $countCart = $cart->count();
+
+        $wishlist = Wishlist::where('user_id', Auth::id())->get();
+        $countWish = $cart->count();
 
         $wishlist = Wishlist::where('user_id', Auth::id())->get();
         $orders = Order::where('id', $id)->where('user_id', Auth::id())->first();

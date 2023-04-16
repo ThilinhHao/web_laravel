@@ -11,7 +11,7 @@ class InforController extends Controller
 {
     //
     public function index() {
-        $users = User::where('role_as','!=','1')->paginate(3);
+        $users = User::where('role_as','!=','1')->orderBy('last_seen','DESC')->paginate(3);
         return view('admin.information.infor', compact('users'));
     }
 

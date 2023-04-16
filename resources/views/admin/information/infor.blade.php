@@ -30,6 +30,8 @@
                             <th>Username</th>
                             <th>Email</th>
                             <th>Type</th>
+                            <th>Last time</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,6 +41,30 @@
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
                             <td>User</td>
+                            <td>{{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</td>
+                            <td>
+                                <span class="online-status {{ $user->last_seen >= now()->subMinutes(2) ? 'online' : 'offline' }}">
+                                    {{ $user->last_seen >= now()->subMinutes(2) ? 'Online' : 'Offline' }}
+                                </span>
+                            </td>
+                            <style>
+                                .online-status {
+                                    padding: 6px 12px;
+                                    border-radius: 20px;
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                }
+
+                                .online {
+                                    background-color: #34d399;
+                                    color: #ffffff;
+                                }
+
+                                .offline {
+                                    background-color: #ef4444;
+                                    color: #ffffff;
+                                }
+                            </style>
                         </tr>
                         @endforeach
                     </tbody>
@@ -54,6 +80,8 @@
                         <th>Username</th>
                         <th>Email</th>
                         <th>Type</th>
+                        <th>Last time</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,6 +91,30 @@
                         <td>{{$user->name}}</td>
                         <td>{{$user->email}}</td>
                         <td>User</td>
+                        <td>{{ Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</td>
+                        <td>
+                            <span class="online-status {{ $user->last_seen >= now()->subMinutes(2) ? 'online' : 'offline' }}">
+                                {{ $user->last_seen >= now()->subMinutes(2) ? 'Online' : 'Offline' }}
+                            </span>
+                        </td>
+                        <style>
+                            .online-status {
+                                padding: 6px 12px;
+                                border-radius: 20px;
+                                font-size: 14px;
+                                font-weight: 600;
+                            }
+
+                            .online {
+                                background-color: #34d399;
+                                color: #ffffff;
+                            }
+
+                            .offline {
+                                background-color: #ef4444;
+                                color: #ffffff;
+                            }
+                        </style>
                     </tr>
                     @endforeach
                 </tbody>

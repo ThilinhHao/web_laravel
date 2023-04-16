@@ -34,9 +34,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($orders as $item)
+
+                                @foreach ($orders as $key => $item)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $key + 1 + ($orders->currentPage() - 1) * $orders->perPage() }}</td>
                                         <td>{{$item->tracking_no}}</td>
                                         <td>{{$item->name}}</td>
                                         <td>{{$item->mobile}}</td>
@@ -47,10 +48,13 @@
                                             <a href="{{url('view-order/'.$item->id)}}" class="btn btn-primary">View</a>
                                         </td>
                                     </tr>
+
                                 @endforeach
                             </tbody>
-
                         </table>
+                        <div class="col-12 pb-1">
+                            {{ $orders->links('pagination::bootstrap-4') }}
+                        </div>
                     </div>
                 </div>
             </div>

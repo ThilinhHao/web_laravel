@@ -101,6 +101,9 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                    @php
+                                        $total_vnd = round($total * 2400);
+                                    @endphp
                                 </tbody>
                             </table>
                             <hr class="mt-0">
@@ -133,13 +136,23 @@
                 </div>
             </div>
         </form>
+
         <div class="container-fluid pt-5">
-            <div  class="col-lg-4" style="float: right; display: inline-block; margin-top: -40px; ">
+            <div class="col-lg-4" style="float: right; display: inline-block; margin-top: -40px;">
                 <form action="{{url('/momo-checkout')}}" method="get" style="background-color: #fff; border: 1px solid #dcdcdc; border-radius: 4px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
                     @csrf
-                    <input type="hidden" name="total_momo" value="{{$total}}">
+                    <input type="hidden" name="total_momo" value="{{$total_vnd}}">
                     <button type="submit" name="payUrl" style="background-color: #f14a4a; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">
                         Thanh toán qua Momo
+                    </button>
+                </form>
+            </div>
+            <div class="col-lg-4" style="float: right; display: inline-block; margin-top: -40px; margin-right: 20px;">
+                <form action="{{url('/vnpay-checkout')}}" method="get" style="background-color: #fff; border: 1px solid #dcdcdc; border-radius: 4px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                    @csrf
+                    <input type="hidden" name="total_vnpay" value="{{$total_vnd}}">
+                    <button type="submit" name="payUrl" style="background-color: #008CBA; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">
+                        Thanh toán qua VNPay
                     </button>
                 </form>
             </div>

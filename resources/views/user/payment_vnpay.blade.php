@@ -4,7 +4,7 @@
 
 @section('content')
 
-<form action="{{ url('momo-payment') }}" method="post">
+<form action="{{ url('vnpay-payment') }}" method="post">
     @csrf
     <div class="row px-xl-5">
         <div class="col-lg-8">
@@ -55,12 +55,12 @@
             @endphp
         @endforeach
         @php
-            $total_vnd = round($total * 240);
+            $total_vnd = round($total * 24000);
         @endphp
         <div class="col-md-6 form-group">
-            <input type="hidden" name="total_momo" value="{{$total_vnd}}">
-            <button type="submit" name="payUrl" style="background-color: #f14a4a; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">
-                Thanh toán qua Momo
+            <input type="hidden" name="total_vnpay" value="{{$total_vnd}}">
+            <button type="submit" name="redirect" style="background-color: #008CBA; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">
+                Thanh toán qua VNPay
             </button>
         </div>
         <div class="col-md-6 form-group">

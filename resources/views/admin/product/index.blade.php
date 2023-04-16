@@ -26,15 +26,15 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th style="text-align:center;">No</th>
-                            <th style="text-align:center;">Image</th>
-                            <th style="text-align:center;">Category</th>
-                            <th style="text-align:center;">Name</th>
-                            <th style="text-align:center;">Number of warehouses</th>
-                            <th style="text-align:center;">Quantity on sale</th>
-                            <th style="text-align:center;">Selling Price</th>
-                            <th style="text-align:center;">Original Price</th>
-                            <th style="text-align:center;">Action</th>
+                            <th style="width:5%; text-align:center;">No</th>
+                            <th style="width:15%; text-align:center;">Image</th>
+                            <th style="width:5%; text-align:center;">Category</th>
+                            <th style="width:10%; text-align:center;">Name</th>
+                            <th style="width:5%; text-align:center;">Number of warehouses</th>
+                            <th style="width:5%; text-align:center;">Quantity on sale</th>
+                            <th style="width:15%; text-align:center;">Selling Price</th>
+                            <th style="width:15%; text-align:center;">Original Price</th>
+                            <th style="width:25%; text-align:center;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
